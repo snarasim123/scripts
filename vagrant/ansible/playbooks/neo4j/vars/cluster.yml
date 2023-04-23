@@ -1,0 +1,41 @@
+---
+###########################################
+#   Backup Restore Settings
+###########################################
+
+var_restore_from: /mnt2/neo4j/backup/{{ var_restore_logical_name }}
+
+###########################################
+#   Neo4j Settings
+###########################################
+
+# Neo4j data location "dbms.directories.data" neo4j.conf setting.
+gvar_neo4j_data_loc: /var/lib/neo4j/data
+
+
+# Neo4j initial heap memory "dbms.memory.heap.initial_size" neo4j.conf setting.
+gvar_init_heap_size: 1g
+
+# Neo4j max heap memory "dbms.memory.heap.max_size" neo4j.conf setting.
+gvar_max_heap_size: 1g
+
+# Neo4j pagecache size "dbms.memory.pagecache.size" neo4j.conf setting.
+gvar_page_cache: 250M
+
+###########################################
+#   Causal Cluster Settings
+###########################################
+
+# Initial Core cluster size.
+gvar_init_cluster_size: 1 
+
+# Totla Core cluster size.
+gvar_total_cluster_size: 1
+
+# metrics
+# metrics_enabled: false
+# metrics_graphite_server: 10.161.75.119
+# metrics_graphite_port: 2003
+
+# security
+gvar_apoc_export_file: false

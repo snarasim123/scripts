@@ -1,0 +1,54 @@
+---
+# - name: Clean plugins directory
+#   file:
+#     state: absent
+#     path: '/var/lib/neo4j/plugins/'
+
+# - name: Create /var/lib/neo4j/plugins/ directory
+#   file:
+#     path: '/var/lib/neo4j/plugins/'
+#     state: directory
+#     owner: neo4j
+#     group: adm
+
+# - name: Deploy plugin files.
+#   copy:
+#     src: "{{ item }}"
+#     dest: '/var/lib/neo4j/plugins/'
+#     backup: yes
+#   with_items:
+#     - 'neo4j-plugins/apoc-3.2.3.5-all.jar'
+    
+
+# This deployes the neo4j.conf file with modifications based on variables from the inventory
+# and this file as well. The correct permissions are set as well.
+- name: Deploy neo4j.conf
+  template:
+    src: './templates/neo4j.conf.j2'
+    dest: '/etc/neo4j/neo4j.conf'
+    owner: neo4j
+    group: adm
+    mode: '0644'
+    backup: yes  # Makes a backup of the files first.  Stored in the same directory as the original file.
+    
+
+# This makes sure the directory exists so that the default auth file can be place here.
+# The correct permissions are set as well.
+- name: Ensures {{ gvar_neo4j_data_loc }}/dbms/ dir exists.
+  file:
+    path: '{{ gvar_neo4j_data_loc }}/dbms/'
+    recurse: yes
+    state: directory
+    owner: neo4j
+    group: adm
+
+# This will deploy the default auth file that already has usernames and passwords configured.
+# The correct permissions are set as well.
+# - name: Deploy auth
+#   template:
+#     src: './templates/prod-auth.j2'
+#     dest: '{{ gvar_neo4j_data_loc }}/dbms/auth'    #'/var/lib/neo4j/data/dbms/auth'
+#     owner: neo4j
+#     group: neo4j
+#     mode: '0644'
+#     backup: yes  # Makes a backup of the files first.  Stored in the same directory as the original file.

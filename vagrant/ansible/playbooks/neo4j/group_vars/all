@@ -1,0 +1,25 @@
+---
+ansible_cache_dir: /var/cache/ansible # Need to update references to ansible cache to use this variable
+software_install_dir: /usr/local/share
+user_binaries: /usr/local/bin
+
+########################################
+#   Cluster Logical Names
+########################################
+
+var_production_cluster_0: localhost
+
+########################################
+#   Global Backup Settings
+########################################
+
+# Path where backup will be stored.
+gvar_backup_path: /mnt2/neo4j/backup/{{ var_logical_name }}
+
+# This is the name of the backup
+gvar_backup_name: graph.db-backup
+
+# Backup rotation in Days note this does not include the latest backup.
+gvar_backup_retention: 6
+
+gvar_neo4j_data_loc: /var/lib/neo4j/data

@@ -1,0 +1,15 @@
+---
+- hosts: cluster
+  gather_facts: false
+  remote_user: vagrant
+  become: yes
+  become_user: root
+  become_method: sudo
+#  vars_files:
+#    - vars/backup.yml
+
+  tasks:
+    - name: Starting the Neo4j Service
+      service:
+        name: neo4j
+        state: started

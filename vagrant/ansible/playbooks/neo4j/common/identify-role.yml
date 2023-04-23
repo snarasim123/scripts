@@ -1,0 +1,5 @@
+---
+- name: Setting gvar_mode to CORE for core server configuration.
+  set_fact:
+    gvar_mode: CORE
+  when: "'cluster' in group_names" # Restricts configuration to this hosts in the group.

@@ -1,0 +1,16 @@
+---
+- hosts: cluster
+  gather_facts: false
+  remote_user: devops
+  become: yes
+  become_user: root
+  become_method: sudo
+#  vars_files:
+#    - vars/backup.yml
+
+  tasks:
+    - name: Switch to Neo4j user to create home dir.
+      command: su neo4j -l -c 'exit'
+      async: 86400
+      poll: 1
+

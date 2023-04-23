@@ -1,0 +1,60 @@
+---
+- hosts: cluster
+  gather_facts: false
+  remote_user: vagrant
+
+  vars_files:
+    - vars/cluster.yml
+
+  #########################################################################
+  #
+  #  The Following Section is for making config changes to all the hosts.
+  #
+  #  Configuration files will be edited useing "lineinfile:"
+  #  Regular Expression will be used to match some text and then be updated.
+  #  This is represented by "regexp:" and "line:"
+  #
+  #########################################################################
+
+  tasks:
+    # Create local folder for logs.
+    - name: Creating local folder for logs.
+      file:
+        path: ./logs/
+        # owner: vagrant
+        # group: devops
+        state: directory
+        mode: 0755
+      delegate_to: localhost
+      when: "'cluster' in group_names" # Restricts configuration to this hosts in the group.
+
+    - name: Clear and create log directory on remote
+      shell: 'rm /home/vagrant/log/* && rmdir /home/vagrant/log && mkdir /home/vagrant/log '
+      ignore_errors: yes  
+
+    - name: Generate neo4j log
+      shell: 'journalctl -u neo4j -b > /home/vagrant/log/journalctl-neo4j.log'
+      ignore_errors: yes
+
+    - name: Getting logs from Core Nodes in Cluster
+      fetch:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        flat: yes
+        fail_ob_missing: no
+        
+      with_items:
+        - { src: '/var/log/neo4j/debug.log', dest: './logs/debug.log'}
+        - { src: '/var/log/neo4j/debug.log.1', dest: './logs/debug.log.1'}
+        - { src: '/var/log/neo4j/debug.log.2', dest: './logs/debug.log.2'}
+        - { src: '/var/log/neo4j/debug.log.3', dest: './logs/debug.log.3'}
+        - { src: '/var/log/neo4j/debug.log.4', dest: './logs/debug.log.4'}
+        - { src: '/var/log/neo4j/query.log', dest: './logs/logquery.log'}
+        - { src: '/etc/neo4j/neo4j.conf', dest: './logs/neo4j.conf'}
+        - { src: '/home/vagrant/log/journalctl-neo4j.log', dest: './logs/journalctl-neo4j.log'}
+      ignore_errors: yes
+
+
+
+
+

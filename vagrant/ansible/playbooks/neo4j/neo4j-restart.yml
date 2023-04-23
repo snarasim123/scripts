@@ -1,0 +1,19 @@
+---
+- hosts: cluster
+  gather_facts: false
+  remote_user: vagrant
+  become: yes
+  become_user: root
+  become_method: sudo
+
+
+  tasks:
+    - name: Stopping the Neo4j Service
+      service:
+        name: neo4j
+        state: stopped
+
+    - name: Starting the Neo4j Service
+      service:
+        name: neo4j
+        state: started

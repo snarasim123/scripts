@@ -1,0 +1,40 @@
+# frozen_string_literal: true
+VAGRANTFILE_API_VERSION = '2'
+HYPERV_NETWORK = 'Internet'
+OS = 'generic/ubuntu1604'
+
+machines = {
+  rancher3: {
+    box: OS,
+    cpus: 2,
+    mem: 2048,
+    vmname: 'rancher-server-3',
+    mac: '00:35:10:00:00:05',
+  },
+  utilserver: {
+    box: OS,
+    cpus: 2,
+    mem: 2048,
+    vmname: 'utility-server-ntp-syslog',
+    mac: '00:35:10:00:00:06',
+  },
+}
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  machines.each do |hostname, info|
+    config.vm.define hostname do |machine|
+      machine.vm.box = info[:box]
+      machine.vm.hostname = hostname
+      machine.vm.network 'public_network', bridge: HYPERV_NETWORK
+      machine.vm.provider 'hyperv' do |hv|
+        hv.vmname = info[:vmname]
+        hv.memory = info[:mem]
+        hv.cpus = info[:cpus]
+        hv.mac = info[:mac]
+      end
+      machine.vm.provision 'shell',
+        #inline: 'sudo apt-get update && apt-get install python2.7 -y'
+        inline: 'sudo apt-get update'
+    end
+  end
+end

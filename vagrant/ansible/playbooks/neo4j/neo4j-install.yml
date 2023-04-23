@@ -1,0 +1,87 @@
+---
+- hosts: cluster
+  gather_facts: false
+  remote_user: vagrant
+  become_user: root
+  become_method: sudo
+  vars_files:
+    - vars/cluster.yml
+#  for help https://neo4j.com/docs/operations-manual/current/installation/linux/debian/
+
+  vars:
+    neo4jver: 1:4.0.3
+    neo4jbasever: 4.0
+
+  tasks:
+    - name: Checking if repository that has been casuing problems is present.
+      stat: path=/etc/apt/sources.list.d/ceph.list
+      register: repo_stat
+
+    - name: Moving repository that has been casuing problems.
+      command: sudo mv /etc/apt/sources.list.d/ceph.list /home/devops/ceph.list
+      when: repo_stat.stat.exists
+
+    - name: Addng Neo4j repo signing key
+      apt_key:
+        url: https://debian.neo4j.com/neotechnology.gpg.key
+        state: present
+      become: true
+   
+    - name: Adding Neo4j stable {{ neo4jbasever }} repo 
+      apt_repository:
+        repo: deb https://debian.neo4j.com stable {{ neo4jbasever }}
+        state: present
+      become: true  
+
+    - name: Run the equivalent of "apt-get update"
+      apt:
+        autoclean: yes
+        update_cache: yes
+      become: true
+
+    # - name: Install apt-transport-https  
+    #   apt:
+    #     name: apt-transport-https
+    #     update_cache: yes
+    #   become: true
+
+    - name: Install Neo4j {{ neo4jver }}
+      apt:
+        name: neo4j={{ neo4jver }}
+        update_cache: yes
+      become: true  
+
+    - name: Checking if problematic repository was moved.
+      stat: path=/home/devops/ceph.list
+      register: repo_stat
+
+    - name: Moving problematic repository back to original location.
+      command: sudo mv /home/devops/ceph.list /etc/apt/sources.list.d/ceph.list
+      when: repo_stat.stat.exists
+
+    - name: Deploy neo4j.conf
+      template:
+        src: './templates/neo4j.conf.j2'
+        dest: '/etc/neo4j/neo4j.conf'
+        owner: neo4j
+        group: adm
+        mode: '0644'
+        backup: yes  # Makes a backup of the files first.  Stored in the same directory as the original file.
+      become: true
+
+    # This makes sure the directory exists so that the default auth file can be place here.
+    # The correct permissions are set as well.
+    - name: Ensures {{ gvar_neo4j_data_loc }}/dbms/ dir exists.
+      file:
+        path: '{{ gvar_neo4j_data_loc }}/dbms/'
+        recurse: yes
+        state: directory
+        owner: neo4j
+        group: adm
+
+    - name: Starting the Neo4j Service
+      service:
+        name: neo4j
+        state: restarted
+      become: true
+      

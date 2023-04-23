@@ -1,0 +1,29 @@
+---
+
+- hosts: cluster
+  gather_facts: False
+  remote_user: vagrant
+  become_user: root
+  become_method: sudo
+  become: yes
+#  vars_files:
+#    - vars/backup.yml
+
+  tasks:
+    - name: Stoping the Neo4j Service
+      service:
+        name: neo4j
+        state: stopped
+      ignore_errors: True
+
+    - name: Uninstall Neo4j Enterprise # {{ neo4jver }}
+      apt:
+        name: neo4j-enterprise #={{ neo4jver }}
+        state: absent
+        purge: yes
+
+    - name: Delete old Data.
+      file:
+        state: absent
+        path: '{{ gvar_neo4j_data_loc }}'
+      ignore_errors: yes

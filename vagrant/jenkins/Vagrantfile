@@ -1,0 +1,51 @@
+Vagrant.configure("2") do |config|
+  config.vm.define "master" do |master|
+    master.vm.box = "generic/ubuntu1804"
+  
+    master.vm.network "private_network", ip: "192.168.50.110",
+      virtualbox__intnet: true
+    master.vm.network "forwarded_port", guest: 8080, host: 8080
+    master.vm.network :forwarded_port, guest: 22, host: 22220
+    master.vm.hostname = "jenkinsmaster"
+    master.vm.provider "virtualbox" do |vb|
+      vb.gui = false
+      vb.cpus = 2
+      vb.memory = "4096"
+      vb.name = "jenkinsmaster"
+    end
+  
+    master.vm.provision "shell" do |shell|
+      shell.path = "jenkins.sh"
+    end
+    master.vm.provision "shell", inline: <<-SHELL
+      echo "Getting master ssh public key"
+      VMPUBKEY=$(sudo cat /var/lib/jenkins/.ssh/id_rsa.pub)
+      echo "$VMPUBKEY"
+    SHELL
+  end
+  
+  config.vm.define "slave1" do |slave1|
+    slave1.vm.box = "generic/ubuntu1804"
+  
+    slave1.vm.network "private_network", ip: "192.168.50.111",
+      virtualbox__intnet: true
+    slave1.vm.network "forwarded_port", guest: 8080, host: 8081
+    slave1.vm.network :forwarded_port, guest: 22, host: 22221
+    slave1.vm.hostname = "jenkinsslave"
+    slave1.vm.provider "virtualbox" do |vs|
+      vs.gui = false
+      vs.cpus = 2
+      vs.memory = "4096"
+      vs.name = "jenkinsslave"
+    end
+  
+    slave1.vm.provision "shell" do |shell|
+      shell.path = "jenkins.sh"
+    end
+    # slave1.vm.provision "shell", inline: <<-SHELL
+#       echo "Getting master ssh public key from slave provision"
+#       echo "$VMPUBKEY"
+#     SHELL
+  end
+end
+

@@ -1,0 +1,23 @@
+---
+- hosts: cluster
+  gather_facts: false
+  remote_user: vagrant
+  become: yes
+  become_user: root
+  become_method: sudo
+  vars_files:
+    - vars/cluster.yml
+
+  #########################################################################
+  #
+  #  The Following Section is for making config changes to all the hosts.
+  #
+  #  Configuration files will be edited useing "lineinfile:"
+  #  Regular Expression will be used to match some text and then be updated.
+  #  This is represented by "regexp:" and "line:"
+  #
+  #########################################################################
+
+  tasks:
+    - import_tasks: common/identify-role.yml
+    - import_tasks: common/tasks/neo4j-config-cluster.yml

@@ -1,0 +1,51 @@
+VAGRANTFILE_API_VERSION = '2'
+OS = 'generic/ubuntu1804'
+
+machines = {
+  server3: {
+    box: OS,
+    cpus: 2,
+    mem: 2048,
+    vmname: 'server-3',
+	  ip: '192.168.50.110',
+    for8080: '8083',
+    for22: '2023',
+  },
+  server2: {
+    box: OS,
+    cpus: 2,
+    mem: 2048,
+    vmname: 'server-2',
+	  ip: '192.168.50.111',
+    for8080: '8082',
+    for22: '2022',
+  },
+  server1: {
+    box: OS,
+    cpus: 2,
+    mem: 2048,
+    vmname: 'server-1',
+	  ip: '192.168.50.112',
+    for8080: '8081',
+    for22: '2021',
+  }
+}
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  machines.each do |hostname, info|
+    config.vm.define hostname do |machine|
+      machine.vm.box = info[:box]
+      machine.vm.hostname = info[:vmname]
+	    machine.vm.network "private_network", ip: info[:ip], virtualbox__intnet: true
+      machine.vm.network "forwarded_port", guest: 8080, host: info[:for8080], auto_correct: true
+	    machine.vm.network "forwarded_port", guest: 22, host: info[:for22], auto_correct: true
+      machine.vm.provider 'virtualbox' do |hv|
+        hv.name = info[:vmname]
+        hv.memory = info[:mem]
+        hv.cpus = info[:cpus]
+      end
+      machine.vm.provision 'shell',
+        inline: 'sudo apt-get update'
+    end
+  end
+end

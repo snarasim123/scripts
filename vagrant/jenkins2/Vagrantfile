@@ -1,0 +1,22 @@
+Vagrant.configure("2") do |config|
+  config.vm.define "master" do |master|
+    master.vm.box = "generic/ubuntu1804"
+  
+    master.vm.network "private_network", ip: "192.168.50.110",
+      virtualbox__intnet: true
+#    master.vm.network "forwarded_port", guest: 8080, host: 8080
+ #   master.vm.network :forwarded_port, guest: 22, host: 22220
+    master.vm.hostname = "DockerHostForJenkins"
+    master.vm.provider "virtualbox" do |vb|
+      vb.gui = false
+      vb.cpus = 2
+      vb.memory = "4096"
+      vb.name = "DockerHostForJenkins"
+    end
+  
+    master.vm.provision "shell" do |shell|
+      shell.path = "jenkins.sh"
+    end
+  end
+end
+
