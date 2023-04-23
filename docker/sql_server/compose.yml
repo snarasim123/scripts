@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+    sqlserver1:
+        build: 
+          context: .
+          dockerfile: Dockerfile
+        ports:  
+          - "15789:1433"
+        env_file:
+          - ./conf/sqlserver.env
+          - ./conf/sapassword.env
+        volumes: 
+          - ./db/sqlsystem:/var/opt/mssql/
+          - ./db/sqldata:/var/opt/sqlserver/data
+          - ./db/sqllog:/var/opt/sqlserver/log
+          - ./db/sqlbackup:/var/opt/sqlserver/backup
+volumes:
+  sqlsystem:
+  sqldata:
+  sqllog:
+  sqlbackup:

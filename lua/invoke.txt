@@ -1,0 +1,13 @@
+./redis-cli -h clustercfg.test-us-west-2-redis.uvpqpa.usw2.cache.amazonaws.com -a {passwd} --tls --scan \
+    --pattern "defaultTenantId:977b3823-9f0d-225f-cd56-6b1d224cf72d:*" 
+
+ ./redis-cli -h clustercfg.test-us-west-2-redis.uvpqpa.usw2.cache.amazonaws.com -a {passwd} -c --tls  \
+    --eval ./getkeys.lua , 977b3823-9f0d-225f-cd56-6b1d224cf72d
+
+./redis-cli -h clustercfg.test-us-west-2-redis.uvpqpa.usw2.cache.amazonaws.com -a {passwd} -c --tls  \
+    --eval ./countsets.lua 
+
+-- to get master nodes
+./redis-cli -h clustercfg.test-us-west-2-redis.uvpqpa.usw2.cache.amazonaws.com -a {passwd} --tls  cluster nodes | awk '{print $2" "$3}' | grep master | awk -F @ '{print $1}'
+
+ ./redis-cli -h clustercfg.test-us-west-2-redis.uvpqpa.usw2.cache.amazonaws.com -a {passwd} -c --tls  eval  "$(cat ./get2.lua)" 0

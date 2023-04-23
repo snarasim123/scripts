@@ -1,0 +1,270 @@
+{
+	"_id" : ObjectId("5f5a23548b022219d2f29d6f"),
+	"managingOrganization" : {
+		"type" : "Organization",
+		"reference" : "Organization/#bc1f6fd8-b3bf-477d-a3ae-84bd30bedcfe"
+	},
+	"name" : [
+		{
+			"given" : [
+				"DAVID"
+			],
+			"family" : "CHOQUETTE JR",
+			"text" : "DAVID N CHOQUETTE JR",
+			"use" : "usual",
+			"extension" : [
+				{
+					"url" : "https://APISERVER/fhir/catasys/source",
+					"valueCode" : "Health Plan"
+				},
+				{
+					"url" : "https://APISERVER/fhir/catasys/timelastmodified",
+					"valueDateTime" : ISODate("2020-09-14T15:29:35.000-07:00")
+				},
+				{
+					"url" : "https://APISERVER/fhir/catasys/timecreated",
+					"valueDateTime" : ISODate("2020-09-14T15:29:35.000-07:00")
+				}
+			]
+		}
+	],
+	"extension" : [
+		{
+			"url" : "https://APISERVER/fhir/catasys/masterstatus",
+			"valueCode" : "Outreach Candidate"
+		},
+		{
+			"url" : "https://APISERVER/fhir/catasys/incampaign",
+			"valueTriggerDefinition" : {
+				"timingDateTime" : ISODate("2020-09-10T06:00:03.000-07:00"),
+				"type" : "data-added",
+				"name" : "Care Portal",
+				"condition" : {
+					"language" : "text/fhirpath"
+				}
+			}
+		},
+		{
+			"url" : "https://APISERVER/fhir/catasys/copayrequired",
+			"valueCode" : "True"
+		}
+	],
+	"resourceType" : "Patient",
+	"gender" : "male",
+	"communication" : [
+		{
+			"language" : {
+				"text" : "English"
+			},
+			"preferred" : true
+		}
+	],
+	"birthDate" : ISODate("1970-07-06T17:00:00.000-07:00"),
+	"identifier" : [
+		{
+			"use" : "official",
+			"assigner" : {
+				"type" : "Organization",
+				"reference" : "Organization/#7de46ea3-1aa4-4d0d-8288-9bd80fa902eb"
+			},
+			"value" : "a021T00000yf8QuQAI",
+			"type" : {
+				"text" : "SF_Id"
+			}
+		},
+		{
+			"use" : "official",
+			"assigner" : {
+				"type" : "Organization",
+				"reference" : "Organization/#fc740d59-a685-4bb5-a521-4691f839bf32"
+			},
+			"period" : {
+				"start" : ISODate("1970-07-06T17:00:00.000-07:00"),
+				"end" : ISODate("4000-12-30T16:00:00.000-08:00")
+			},
+			"value" : "10106566590098",
+			"type" : {
+				"text" : "Ins_Id"
+			}
+		},
+		{
+			"use" : "official",
+			"assigner" : {
+				"type" : "Organization",
+				"reference" : "Organization/#92559df8-c38c-4222-b3ed-a648c15af4fa"
+			},
+			"value" : "1",
+			"type" : {
+				"text" : "Eligibility_Status_Id"
+			}
+		},
+		{
+			"use" : "official",
+			"assigner" : {
+				"type" : "Organization",
+				"reference" : "Organization/#e312d4c5-373e-4bd1-8843-019a1d433aa8"
+			},
+			"value" : "a065000000VbXPcAAN",
+			"type" : {
+				"text" : "Service_Center_Id"
+			}
+		}
+	],
+	"contained" : [
+		{
+			"name" : "Salesforce",
+			"resourceType" : "Organization",
+			"id" : "7de46ea3-1aa4-4d0d-8288-9bd80fa902eb"
+		},
+		{
+			"name" : "Aetna, Inc.",
+			"resourceType" : "Organization",
+			"id" : "fc740d59-a685-4bb5-a521-4691f839bf32"
+		},
+		{
+			"name" : "Aetna, Inc.",
+			"resourceType" : "Organization",
+			"id" : "92559df8-c38c-4222-b3ed-a648c15af4fa"
+		},
+		{
+			"name" : "Aetna PA: Medicare",
+			"resourceType" : "Organization",
+			"id" : "e312d4c5-373e-4bd1-8843-019a1d433aa8"
+		},
+		{
+			"name" : "Salesforce",
+			"resourceType" : "Organization",
+			"id" : "dcd0a6a3-8301-4e23-94f9-6beff262e4fa"
+		},
+		{
+			"name" : "Aetna, Inc.",
+			"resourceType" : "Organization",
+			"telecom" : [
+				{
+					"use" : "work",
+					"rank" : 1,
+					"system" : "phone",
+					"value" : "+18602730123"
+				}
+			],
+			"contact" : [
+				{
+					"telecom" : [
+						{
+							"use" : "work",
+							"rank" : 1,
+							"system" : "phone",
+							"value" : "+18602730123"
+						}
+					]
+				}
+			],
+			"active" : true,
+			"identifier" : [
+				{
+					"use" : "official",
+					"assigner" : {
+						"type" : "Organization",
+						"reference" : "Organization/#dcd0a6a3-8301-4e23-94f9-6beff262e4fa"
+					},
+					"value" : "0015000000JjuerAAB",
+					"type" : {
+						"text" : "SF_Account_Id"
+					}
+				}
+			],
+			"type" : [
+				{
+					"text" : "Health Plan"
+				}
+			],
+			"id" : "bc1f6fd8-b3bf-477d-a3ae-84bd30bedcfe"
+		},
+		{
+			"name" : "Aetna, Inc.",
+			"resourceType" : "Organization",
+			"telecom" : [
+				{
+					"use" : "work",
+					"rank" : 1,
+					"system" : "phone",
+					"value" : "+18602730123"
+				}
+			],
+			"contact" : [
+				{
+					"telecom" : [
+						{
+							"use" : "work",
+							"rank" : 1,
+							"system" : "phone",
+							"value" : "+18602730123"
+						}
+					]
+				}
+			],
+			"active" : true,
+			"identifier" : [
+				{
+					"use" : "official",
+					"assigner" : {
+						"type" : "Organization",
+						"reference" : "Organization/#dcd0a6a3-8301-4e23-94f9-6beff262e4fa"
+					},
+					"value" : "0015000000JjuerAAB",
+					"type" : {
+						"text" : "SF_Account_Id"
+					}
+				}
+			],
+			"type" : [
+				{
+					"text" : "Health Plan"
+				}
+			],
+			"id" : "bc1f6fd8-b3bf-477d-a3ae-84bd30bedcfe"
+		}
+	],
+	"contact" : [
+		{
+			"gender" : "unknown",
+			"period" : {
+				"start" : ISODate("2020-09-09T17:00:00.000-07:00"),
+				"end" : ISODate("4000-12-30T16:00:00.000-08:00")
+			},
+			"organization" : {
+				"type" : "Organization",
+				"reference" : "Organization/#8745fc96-1e5d-473b-bac4-f212c8533e86"
+			}
+		}
+	],
+	"meta" : {
+		"lastUpdated" : ISODate("2020-09-10T06:00:03.000-07:00")
+	},
+	"address1" : [
+		{
+			"extension" : [
+				{
+					"url" : "https://APISERVER/fhir/catasys/preferred",
+					"valueCode" : "Preferred"
+				},
+				{
+					"url" : "https://APISERVER/fhir/catasys/source",
+					"valueCode" : "Member"
+				},
+				{
+					"url" : "https://APISERVER/fhir/catasys/timelastmodified",
+					"valueDateTime" : ISODate("2020-09-10T06:00:03.000-07:00")
+				},
+				{
+					"url" : "https://APISERVER/fhir/catasys/timecreated",
+					"valueDateTime" : ISODate("2020-09-10T06:00:03.000-07:00")
+				}
+			],
+			"line" : [
+				"404 5TH ST"
+			]
+		}
+	],
+	"active" : true
+}

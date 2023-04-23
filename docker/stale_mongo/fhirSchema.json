@@ -1,0 +1,49 @@
+db.createCollection('PatientsFHIR', {
+  validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      required: ['address', 'active'],
+      properties: {
+        _id: {
+          bsonType: 'objectId',
+        },
+        address: {
+          bsonType: 'object',
+          additionalProperties: false,
+          properties: {
+            extension: {
+              bsonType: 'array',
+              properties:{
+                extensionUrl: {
+                    type: 'object',
+                    required: [ 'url', 'value' ],
+                    properties: {
+                      url: {
+                        type: 'string',
+                        description: 'The url.'
+                      },
+                      valueCode: {
+                        type: 'string',
+                        description: 'Could be valueCode or valueDateTime'
+                      },
+                      valueDateTime: {
+                        type: 'string',
+                        description: 'Could be valueCode or valueDateTime'
+                      }
+                    }
+                  }
+              }
+            },
+            line: {
+                bsonType: 'string',
+                items: { type: 'string'}
+              }
+            },
+        },
+        active: {
+          bsonType: 'bool',
+        },
+      },
+    },
+  },
+});

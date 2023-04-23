@@ -1,0 +1,48 @@
+version: '3.7'
+services:
+  mongodb:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: mongo
+    hostname: mongo
+    environment:
+      - MONGODB_ENABLE_JOURNAL=false
+      - MONGO_INITDB_DATABASE=admin
+      # MONGODB_HOSTNAME: mongohost
+    volumes:
+      # - './conf/mongod.conf:/etc/mongod.conf'
+      - ./mongo-seed:/mongo-seed
+      - ./mongo-data/database:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d
+      - ./mongo-scripts:/mongo-scripts
+      - ./mongo-config:/mongo-conf
+      # - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - 27017:27017
+    networks:
+      mongo_net:
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 26677
+        hard: 46677
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    environment:
+        ME_CONFIG_OPTIONS_EDITORTHEME: "ambiance"
+        # ME_CONFIG_BASICAUTH_USERNAME: "user"
+        # ME_CONFIG_BASICAUTH_PASSWORD: "tester"
+        ME_CONFIG_MONGODB_SERVER: "mongo"
+    networks:
+        - mongo_net
+    ports:
+        - 8081:8081
+    # depends_on:
+        # - mongodb
+    restart: unless-stopped
+networks:
+  mongo_net:
+    driver: bridge

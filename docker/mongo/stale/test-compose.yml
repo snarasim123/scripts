@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  mongodb:
+    image : mongo
+    container_name: mongodb
+    # environment:
+    #   - PUID=1000
+    #   - PGID=1000
+    # volumes:
+      # - ./seed:/mongo-seed
+    ports:
+      - 127.0.0.1:27017:27017
+      - 0.0.0.0:27017:27017
+    restart: unless-stopped

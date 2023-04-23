@@ -1,0 +1,33 @@
+docker run --name testneo4j -p7474:7474 -p7687:7687 -d -v $HOME/data/neo4j/data:/data -v $HOME/data/neo4j/logs:/logs -v $HOME/data/neo4j/import:/var/lib/neo4j/import -v $HOME/data/neo4j/plugins:/plugins --env NEO4J_AUTH=neo4j/test neo4j:latest
+
+docker run --name testneo4j1 -p7474:7474 -p7687:7687 -d  -v $HOME/data/neo4j/import:/var/lib/neo4j/import -v $HOME/data/neo4j/plugins:/plugins --env NEO4J_AUTH=neo4j/test neo4j:latest
+
+docker run --name testneo4j2 -p7474:7474 -p7687:7687 -d  --env NEO4J_AUTH=neo4j/test neo4j:latest
+
+#install vim
+apt-get update
+apt-get install vim
+apt-get install procps
+apt-get install systemd
+
+#shell into container
+#set heap, page cache
+#enable bolt by uncommenting 0.0.0.0
+
+
+/etc/security/limits.conf needs to have these lines in it:
+neo4j  soft  nofile  40000
+neo4j  hard  nofile  40000
+
+/etc/pam.d/common-session needs to have this line in it:
+session required pam_limits.so
+
+/etc/pam.d/common-session-noninteractive also needs to have this line in it:
+session required pam_limits.so
+
+If running ulimit -n (with the correct user) is giving you the number you just set, 
+but cat /proc/{process_id}/limits is still printing the low number, 
+you almost certainly have a process manager, an init script, or something similar overriding your limits. 
+One last thing worth noting is that processes inherit the limits of the parent process.
+
+#Reboot your machine

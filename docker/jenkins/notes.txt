@@ -1,0 +1,43 @@
+Jenkins
+------
+Local setup for jenkins
+	>>sudo mkdir /Users/snarasimhan/jenkins_home
+    >>sudo chown -R 1000:1000 /Users/snarasimhan/jenkins_home
+    >>docker run  -d -p 8080:8080 -p 50000:50000 -v /Users/snarasimhan/var2:/var/jenkins_home --name jenkins1 jenkins/jenkins:lts
+							
+	Find initial password from ~/var2/secrets/initialAdminPassword file.
+	>>cat ~/var2/secrets/initialAdminPassword
+	http://localhost:8080/
+	login using initial password. setup admin password and users.
+	set up recommended plugins
+	
+	install first slave,
+	>>docker run  -d -p 8081:8080 -p 50001:50000 -v /Users/snarasimhan/var3:/var/jenkins_home --name jenkins2 jenkins/jenkins:lts
+	
+	To remove
+	---------
+
+	docker images -a (to get image id)
+	docker stop jenkins1
+	docker rm jenkins1
+	
+	docker stop jenkins2
+	docker rm jenkins2
+	
+	docker rmi {image_id}
+	
+	new image and run
+	-----------------
+
+
+	docker build -t newjenkins .
+	docker run -it -d -p 8080:8080 -p 50000:50000 -p 22220:22 -v /Users/snarasimhan/var2:/var/jenkins_home --name jenkins1 newjenkins
+	docker run -it -d -p 8081:8080 -p 50001:50000 -p 22221:22 -v /Users/snarasimhan/var3:/var/jenkins_home --name jenkins2 newjenkins
+	
+	exec shell and copy ssh public key
+	----------------------------------
+	docker exec -it jenkins2 /bin/bash
+
+	 get running ip
+	 --------------
+	 docker inspect <containerNameOrId>

@@ -1,0 +1,79 @@
+
+net-tools
+vim
+
+docker-compose -f docker-compose.yml up
+docker-compose -f docker-compose.yml run -d mongodb
+docker-compose -f docker-compose.yml run -d mongo-express
+docker-compose -f docker-compose.yml run mongo-express
+docker-compose stop
+docker ps -aqf "name=^docker_mongodb_1$"
+docker logs 4459702c5cec
+
+docker-compose -f docker-compose.yml run -d mongo
+docker ps 
+docker exec -it {} bash
+
+docker compose
+--------------
+bring up containers from compose file           docker-compose -f {docker-compose.yml} up -d
+run a container within compose file             docker-compose -f {docker-compose.yml} run -d {container_name}
+stop all containers from compose file           docker-compose stop
+
+export/import from/to mongo
+---------------------------
+
+/Applications/mongodb-macos-x86_64-4.4.4/bin/mongoexport -h mdbq01.corp.catasys.com:27017 -u df_cstreams -p dfn2dsf4  --authenticationDatabase pipelineprod -d pipelineprod -c 1fs_onTrakMember  -o ./mongo-seed/onTrakMember.json
+mongoimport -h mdbq01.corp.catasys.com:27017 -u df_cstreams -p {}  -d pipelineprod  -c 1fs_onTrakMember  --file ./seed/onTrakMember.json
+
+/Applications/mongodb-macos-x86_64-4.4.4/bin/mongoexport -h mdbq01.corp.catasys.com:27017 -u df_cstreams -p dfn2dsf4  --authenticationDatabase pipelineprod -d pipelineprod -c 1fs_patientsFHIR  -o ./patientsFHIR.json
+mongoimport -h mdbq01.corp.catasys.com:27017 -u df_cstreams -p {}  -d pipelineprod  -c 1fs_onTrakMember  --file ./seed/patientsFHIR.json
+
+mongoexport -h mongo:27017 -u root -p example  --authenticationDatabase admin -d pipelineprod -c onTrakMember  -o ./mongo-seed/otm.json
+mongoimport -h mongo:27017 -u root -p example  -d pipelineprod  -c 1fs_onTrakMember  --file ./seed/CatasysElig.json
+
+tar/gzip json files
+-------------------
+tar json files
+                        tar czvf otm.json.tar.gz  otm.json
+                        tar czvf patients.json.tar.gz  patients.json
+untar gzip tar files
+                        tar xvf patients.json.tar.gz
+                        tar xvf otm.json.tar.gz
+
+container
+---------
+List all containers	        docker ps -aq
+Stop all running 
+    containers	            docker stop $(docker ps -aq)
+Remove all containers	    docker rm $(docker ps -aq)
+Remove all images	        docker rmi $(docker images -q)
+Remove a container          docker rm {container_name}
+get ip address              docker inspect {container_id} | grep -i ip
+login to container
+    shell                   docker exec -it {container_id} bash
+
+image
+-----
+list all the images         docker image ls
+remove a image
+get container using 
+    an image
+
+network
+--------
+docker network prune
+docker network ls
+
+validate yaml
+-------------
+docker-compose -f docker-compose.yml config
+
+
+db.getCollection("patientsFHIRprodSrini").createIndex({"name.given" : 1,"name.family" : 1,"name.text" : 1})
+db.getCollection("patientsFHIRprodSrini").createIndex({"identifier.value" : 1})
+db.getCollection("patientsFHIRprodSrini").createIndex({"identifier.type.text" : 1,"identifier.value" : 1})
+db.getCollection("patientsFHIRprodSrini").createIndex({"_id" : 1,"extension.url" : 1})
+db.getCollection("patientsFHIRprodSrini").createIndex({"telecom.value" : 1})
+db.getCollection("patientsFHIRprodSrini").createIndex({"contained.name" : 1})
+db.getCollection("patientsFHIRprodSrini").createIndex({"_id" : 1})

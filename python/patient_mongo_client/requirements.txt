@@ -1,0 +1,9 @@
+deepdiff
+bson
+pymongo
+# simple-salesforce
+setuptools
+validator
+simple-mockforce
+simple-salesforce
+tests
