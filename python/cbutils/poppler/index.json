@@ -1,0 +1,29 @@
+{
+  "arch": "x86_64",
+  "build": "h9ff6ed8_0",
+  "build_number": 0,
+  "depends": [
+    "cairo >=1.16.0,<1.17.0a0",
+    "fontconfig >=2.13.1,<3.0a0",
+    "freetype >=2.10.4,<3.0a0",
+    "gettext >=0.19.8.1,<1.0a0",
+    "jpeg >=9d,<10a",
+    "libcurl >=7.71.1,<8.0a0",
+    "libglib >=2.66.7,<3.0a0",
+    "libiconv >=1.16,<1.17.0a0",
+    "libpng >=1.6.37,<1.7.0a0",
+    "libtiff >=4.2.0,<5.0a0",
+    "openjpeg >=2.4.0,<2.5.0a0",
+    "poppler-data",
+    "vc >=14.1,<15.0a0",
+    "vs2015_runtime >=14.16.27012",
+    "zlib >=1.2.11,<1.3.0a0"
+  ],
+  "license": "GPL-2.0-only",
+  "license_family": "GPL",
+  "name": "poppler",
+  "platform": "win",
+  "subdir": "win-64",
+  "timestamp": 1614746051440,
+  "version": "21.03.0"
+}
