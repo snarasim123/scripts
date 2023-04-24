@@ -1,15 +1,45 @@
-local ans, has, cursor = {}, {}, "0";
-local calls = 0
+-- Set the pattern to scan for
+local ans = {}
+local pattern = ARGV[1]
+local batchSize =  ARGV[2]
+local cursor = '0'
 
 repeat
-    local t = redis.call("SCAN", cursor, "MATCH", "defaultTenantId:"..ARGV[1]..":*", "COUNT", 1000000000);
-    local list = t[2];
-    for i = 1, #list do
-        local s = list[i];
-        local val = redis.pcall("GET",s);
-        local typevar = type(val)
-        ans[#ans + 1] = "Del :"..s.." :Type -->"..typevar;
-    end;
-    cursor = t[1];
-until cursor == "0";
+    local result = redis.call('SCAN', cursor, 'MATCH', pattern, 'COUNT', batchSize)
+        for _, key in ipairs(result[2]) do
+            if key ~=nil and type(key) == "table" then
+                 for k, v in pairs(t) do key = v; end;
+            end;
+            if key ~=nil then
+            	local keyty = redis.pcall('type', key)['ok']
+            	if keyty ~=nil then
+                    if keyty == 'string' then
+                        local count = redis.pcall("DEL",key)
+                        ans[#ans+1] = key.." -> string type, removed : "..count;
+                    elseif keyty == 'list' then
+                        local count = redis.pcall("DEL",key)
+                        ans[#ans+1] = key.." -> list type, removed : "..count; 
+                    elseif keyty == 'set' then
+                        local count = redis.pcall("DEL",key)
+                        ans[#ans+1] = key.." -> set type, removed :"..count;
+                    elseif keyty == 'zset' then
+                        local count = redis.pcall("DEL",key)
+                        ans[#ans+1] = key.." -> sortedset type, removed :"..count;
+                    elseif keyty=='hash' then
+                        local count = redis.pcall("DEL",key)
+                        ans[#ans+1] = key.." -> hash type, removed :"..count;
+                    else 
+                        local count = redis.pcall("DEL",key)
+                        ans[#ans+1] = key.." -> unknown type, removed :"..count;
+                    end
+            	end;
+            	if keyty ==nil then
+               		ans[#ans+1] = key.." Empty type, not removed.";
+            	end;
+            end;
+        end
+    cursor = result[1]
+until (cursor == '0')
 return ans;
+
+

@@ -15,10 +15,26 @@ repeat
             if key ~=nil then
             	local keyty = redis.pcall('type', key)['ok']
             	if keyty ~=nil then
-		 			if keyty == 'set' then
-            	       local count = redis.pcall("SCARD",key)
-                   		ans[#ans+1] = key.." -> "..count;
-            		end
+                    -- if keyty == 'string' then
+                    --     local count = redis.pcall("STRLEN",key)
+                    --     ans[#ans+1] = key.." -> string type : "..count;
+                    -- elseif keyty == 'list' then
+                    --     local count = redis.pcall("LLEN",key)
+                    --     ans[#ans+1] = key.." -> list type : "..count; 
+                    -- elseif keyty == 'set' then
+                    --     local count = redis.pcall("SCARD",key)
+                    --     ans[#ans+1] = key.." -> set type"..count;
+                    -- elseif keyty == 'zset' then
+                    --     local count = redis.pcall("ZCARD",key)
+                    --     ans[#ans+1] = key.." -> sortedset type"..count;
+                    -- elseif keyty=='hash' then
+                    --     local count = redis.pcall("HLEN",key)
+                    --     ans[#ans+1] = key.." -> hash type"..count;
+                    -- end
+                    if keyty == 'set' then
+                            local count = redis.pcall("SCARD",key)
+                            ans[#ans+1] = key.." -> set type"..count;
+                    end
             	end;
             	if keyty ==nil then
                		ans[#ans+1] = key.." Empty type";
