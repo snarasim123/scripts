@@ -1,8 +1,8 @@
 # Home directory of the demo tool
-TOOL_HOME=<Specify the directory where the tool artifacts will be placed>
+TOOL_HOME=/work/ec
 
 # Full path to the Java 11 location
-JAVA_CMD=<Specify the path to the Java 11 'java' executable>
+JAVA_CMD=/usr/lib/jvm/zulu-11//bin/java
 
 # Dependent jar file locations
 TOOL_LIB=${TOOL_HOME}/lib
