@@ -11,25 +11,25 @@ repeat
                  for k, v in pairs(t) do key = v; end;
             end;
             if key ~=nil then
-            	local keyty = redis.pcall('type', key)['ok']
+            	local keyty = redis.call('type', key)['ok']
             	if keyty ~=nil then
                     if keyty == 'string' then
-                        local count = redis.pcall("DEL",key)
+                        local count = redis.call("DEL",key)
                         ans[#ans+1] = key.." -> string type, removed : "..count;
                     elseif keyty == 'list' then
-                        local count = redis.pcall("DEL",key)
+                        local count = redis.call("DEL",key)
                         ans[#ans+1] = key.." -> list type, removed : "..count; 
                     elseif keyty == 'set' then
-                        local count = redis.pcall("DEL",key)
+                        local count = redis.call("DEL",key)
                         ans[#ans+1] = key.." -> set type, removed :"..count;
                     elseif keyty == 'zset' then
-                        local count = redis.pcall("DEL",key)
+                        local count = redis.call("DEL",key)
                         ans[#ans+1] = key.." -> sortedset type, removed :"..count;
                     elseif keyty=='hash' then
-                        local count = redis.pcall("DEL",key)
+                        local count = redis.call("DEL",key)
                         ans[#ans+1] = key.." -> hash type, removed :"..count;
                     else 
-                        local count = redis.pcall("DEL",key)
+                        local count = redis.call("DEL",key)
                         ans[#ans+1] = key.." -> unknown type, removed :"..count;
                     end
             	end;
